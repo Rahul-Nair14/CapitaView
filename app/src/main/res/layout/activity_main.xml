@@ -5,89 +5,114 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    android:background="#ffffff"
+    android:background="#319bc6"
     >
 
     <ImageView
+        android:layout_marginTop="50dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/cvappicon"
         android:layout_centerHorizontal="true"
-
+        android:id="@+id/CapitaViewLogoLogin"
         />
 
     <TextView
-        android:layout_marginTop="100dp"
+        android:layout_below="@+id/CapitaViewLogoLogin"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/MaterialAlertDialog.Material3.Body.Text"
         android:textColor="#0f396d"
         android:text="CapitaView"
         android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:padding="10dp"
         android:textSize="40sp"
         android:id="@+id/loginPageCVTitle"/>
 
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/MaterialAlertDialog.Material3.Body.Text"
-        android:textColor="#0f396d"
-        android:text="Login"
-        android:layout_centerHorizontal="true"
-        android:textSize="25sp"
-        android:layout_below="@+id/loginPageCVTitle"
-        android:id="@+id/loginPageTitle"/>
-
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_centerHorizontal="true"
+    android:layout_below="@id/loginPageCVTitle"
+    android:id="@+id/LoginUserNameBlock"
+    >
     <TextView
         android:id="@+id/loginPageUserNameCaption"
         style="@style/MaterialAlertDialog.Material3.Body.Text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginPageTitle"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="56dp"
+        android:layout_marginTop="55dp"
         android:text="Username:"
         android:textColor="#0f396d"
         android:textSize="25sp" />
-
-    <TextView
-        android:layout_marginTop="10dp"
-        android:layout_width="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_height="wrap_content"
-        style="@style/MaterialAlertDialog.Material3.Body.Text"
-        android:textColor="#0f396d"
-        android:layout_below="@+id/loginPageUserNameCaption"
-        android:text="Password:"
-        android:textSize="25sp"
-        android:id="@+id/loginPagePasswordCaption"/>
-
 
     <EditText
         android:id="@+id/LoginPageUserNameEntry"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/loginPageTitle"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="62dp"
-        android:layout_toEndOf="@+id/loginPageUserNameCaption"
+        android:layout_marginTop="55dp"
         android:background="@color/white"
         android:textColor="@color/black"
         />
+</LinearLayout>
 
-
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/LoginUserNameBlock"
+        android:id="@+id/LoginPasswordBlock"
+        >
+    <TextView
+        android:id="@+id/loginPagePasswordCaption"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Password:"
+        android:textColor="#0f396d"
+        android:textSize="25sp" />
 
     <EditText
         android:id="@+id/LoginPagePassWordEntry"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/LoginPageUserNameEntry"
         android:layout_marginStart="18dp"
-        android:layout_marginTop="18dp"
-        android:layout_toEndOf="@+id/loginPagePasswordCaption"
+        android:layout_marginTop="13dp"
         android:background="@color/white"
         android:textColor="@color/black"
+        />
+    </LinearLayout>
+
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:text="Login"
+        android:textSize="25sp"
+        android:id="@+id/LoginButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/LoginPasswordBlock"
+        android:layout_marginTop="30dp"
+        android:background="#0f396d"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@+id/LoginButton"
+        android:textColor="@color/black"
+        android:textSize="15sp"
+        android:layout_marginTop="10dp"
+        android:text="Not Logged in? Sign up here"
+        android:id="@+id/loginSignInLink"
         />
 
 

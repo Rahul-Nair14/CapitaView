@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MainActivity"
+    android:background="#319bc6"
+    >
+
+    <ImageView
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cvappicon"
+        android:layout_centerHorizontal="true"
+        android:id="@+id/CapitaViewLogoRegister"
+        />
+
+    <TextView
+        android:layout_below="@+id/CapitaViewLogoRegister"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:textColor="#0f396d"
+        android:text="CapitaView"
+        android:layout_centerHorizontal="true"
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:textSize="40sp"
+        android:id="@+id/registerPageCVTitle"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/registerPageCVTitle"
+        android:id="@+id/RegisterUserNameBlock"
+        >
+    <TextView
+        android:id="@+id/registerPageUserNameCaption"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="36dp"
+        android:text="Enter Username:"
+        android:textColor="#0f396d"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/registerPageUserNameEntry"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="34dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RegisterUserNameBlock"
+        android:id="@+id/RegisterPasswordBlock"
+        >
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_height="wrap_content"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:textColor="#0f396d"
+        android:text="Enter Password:"
+        android:textSize="20sp"
+        android:id="@+id/registerPagePasswordCaption"/>
+
+    <EditText
+        android:id="@+id/registerPagePassWordEntry"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="34dp"
+        android:layout_marginTop="13dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RegisterPasswordBlock"
+        android:id="@+id/RegisterCPasswordBlock"
+        >
+
+    <TextView
+        android:id="@+id/registerPageCPasswordCaption"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Confirm Password:"
+        android:textColor="#0f396d"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/registerPageCPasswordEntry"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="9dp"
+        android:layout_marginTop="12dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/RegisterCPasswordBlock"
+        android:id="@+id/RegisterFullNameBlock"
+        >
+
+    <TextView
+        android:id="@+id/registerPageFullNameCaption"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="10dp"
+        android:text="Enter Full Name:"
+        android:textColor="#0f396d"
+        android:textSize="20sp" />
+
+    <EditText
+        android:id="@+id/registerPageFullNameEntry"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="14dp"
+        android:background="@color/white"
+        android:textColor="@color/black"
+        />
+    </LinearLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:text="Register"
+        android:textSize="25sp"
+        android:id="@+id/RegisterButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/RegisterFullNameBlock"
+        android:layout_marginTop="30dp"
+        android:background="#0f396d"
+        android:textColor="@color/white"
+        android:layout_centerHorizontal="true"
+        />
+
+
+
+</RelativeLayout>
