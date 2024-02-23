@@ -45,7 +45,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="55dp"
-        android:text="Username:"
+        android:text="Email Id:"
         android:textColor="#0f396d"
         android:textSize="25sp" />
 
@@ -53,7 +53,7 @@
         android:id="@+id/LoginPageUserNameEntry"
         android:layout_width="200dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="18dp"
+        android:layout_marginStart="38dp"
         android:layout_marginTop="55dp"
         android:background="@color/white"
         android:textColor="@color/black"
@@ -86,6 +86,7 @@
         android:layout_marginTop="13dp"
         android:background="@color/white"
         android:textColor="@color/black"
+        android:inputType="textPassword"
         />
     </LinearLayout>
 

@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="30dp"
         android:layout_marginTop="36dp"
-        android:text="Enter Username:"
+        android:text="Enter Email ID:"
         android:textColor="#0f396d"
         android:textSize="20sp" />
 
@@ -54,7 +54,7 @@
         android:id="@+id/registerPageUserNameEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="47dp"
         android:layout_marginTop="34dp"
         android:background="@color/white"
         android:textColor="@color/black"
@@ -88,6 +88,7 @@
         android:layout_marginStart="34dp"
         android:layout_marginTop="13dp"
         android:background="@color/white"
+        android:inputType="textPassword"
         android:textColor="@color/black"
         />
     </LinearLayout>
@@ -119,6 +120,7 @@
         android:layout_marginStart="9dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
+        android:inputType="textPassword"
         android:textColor="@color/black"
         />
     </LinearLayout>

@@ -1,5 +1,6 @@
 package com.example.capitaview_page_1;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -13,12 +14,18 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+
 public class MainActivity extends AppCompatActivity {
 
     TextView signInLink;
     EditText loginUserNameVar, loginPasswordVar;
     Button loginButtonVar;
 
+    FirebaseAuth firebaseAuth;
 
 
     @Override
@@ -31,6 +38,8 @@ public class MainActivity extends AppCompatActivity {
         loginPasswordVar = (EditText)findViewById(R.id.LoginPagePassWordEntry);
         loginButtonVar = (Button)findViewById(R.id.LoginButton);
 
+        firebaseAuth = FirebaseAuth.getInstance();
+
         signInLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -40,7 +49,6 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         Intent intent = new Intent(MainActivity.this,Registration_activity.class);
                         startActivity(intent);
-                        finish();
                     }
                 },1000);
 
@@ -54,12 +62,23 @@ public class MainActivity extends AppCompatActivity {
                 String userName = loginUserNameVar.getText().toString();
                 String passWord = loginPasswordVar.getText().toString();
 
-                if(isValidEmail(userName)) {
+                if(isValidEmail(userName) && !(userName.isEmpty()) && !(passWord.isEmpty())) {
 
-                    Toast.makeText(getApplicationContext(),"Welcome "+ userName,Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(MainActivity.this,MainDashboard.class);
-                    startActivity(intent);
+                    firebaseAuth.signInWithEmailAndPassword(userName,passWord).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if(task.isSuccessful()){
+                            Toast.makeText(getApplicationContext(),"Welcome "+ userName,Toast.LENGTH_SHORT).show();
+                            Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+                            startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(getApplicationContext(),"Login Failed",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
                 }
+
                 else {
                     Toast.makeText(getApplicationContext(),"Invalid Username or password",Toast.LENGTH_SHORT).show();
                 }
