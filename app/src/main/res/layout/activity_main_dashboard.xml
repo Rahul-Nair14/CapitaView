@@ -1,9 +1,112 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainDashboard">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:background="#319bc6"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_marginTop="10dp"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/cvappicon"
+        android:layout_gravity="center"
+        android:id="@+id/CapitaViewLogoDashboard"
+        />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/MaterialAlertDialog.Material3.Body.Text"
+        android:textColor="#0f396d"
+        android:text="CapitaView"
+        android:background="#ffffff"
+        android:padding="10dp"
+        android:textSize="30sp"
+        android:layout_gravity="center"
+        android:id="@+id/dashboardPageCVTitle"/>
+
+    <GridLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:rowCount="2"
+        android:columnCount="2"
+        android:layout_marginTop="30dp"
+        android:layout_gravity="center"
+        >
+
+        <ImageButton
+            android:id="@+id/dashboardManageButton"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:layout_row="0"
+            android:layout_rowWeight="1"
+            android:layout_column="0"
+            android:layout_columnWeight="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:src="@drawable/manage"
+            android:text="Manage Portfolio"
+            />
+
+        <ImageButton
+            android:src="@drawable/view"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:id="@+id/dashboardViewButton"
+            android:text="Manage Portfolio"
+            android:layout_row="0"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            />
+
+        <ImageButton
+            android:src="@drawable/charts"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:id="@+id/dashboardChartsButton"
+            android:text="Charts"
+            android:layout_row="1"
+            android:layout_column="0"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            />
+
+        <ImageButton
+            android:src="@drawable/news"
+            android:layout_height="200dp"
+            android:layout_width="200dp"
+            android:layout_columnWeight="1"
+            android:layout_rowWeight="1"
+            android:id="@+id/dashboardNewsButton"
+            android:text="Economic News"
+            android:layout_row="1"
+            android:layout_column="1"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            />
+
+    </GridLayout>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:text="Log out"
+        android:textSize="25sp"
+        android:id="@+id/LogoutButton"
+        android:layout_width="200dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:background="#0f396d"
+        android:textColor="@color/white"
+        android:layout_gravity="center_horizontal"
+        />
+
+</LinearLayout>
