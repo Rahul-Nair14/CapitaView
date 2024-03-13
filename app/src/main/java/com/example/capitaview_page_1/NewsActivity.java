@@ -76,7 +76,7 @@ public class NewsActivity extends AppCompatActivity {
 
     private void fetchEconomicNews() {
         OkHttpClient client = new OkHttpClient();
-        String url = "https://newsapi.org/v2/top-headlines?country=in&category=business&apiKey=ec2e4544397a407f85e540d8d1cbde3e";
+        String url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=ec2e4544397a407f85e540d8d1cbde3e";
 
         Request request = new Request.Builder()
                 .url(url)

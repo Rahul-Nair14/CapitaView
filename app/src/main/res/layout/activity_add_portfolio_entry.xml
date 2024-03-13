@@ -1,0 +1,100 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/capitaViewLightBlue"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_marginTop="30dp"
+        android:background="@color/capitaViewDarkBlue"
+        android:padding="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="30sp"
+        android:textColor="@color/white"
+        android:text="Add to Portfolio"
+        android:textStyle="bold"
+        android:layout_gravity="center_horizontal"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Select company from List:"
+        android:textStyle="bold"
+        android:layout_marginTop="60dp"
+        android:textSize="20sp"/>
+
+    <Spinner
+        android:layout_marginTop="10dp"
+        android:id="@+id/companyNameSpinner"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:textColor="@color/black"
+        android:spinnerMode="dropdown"
+        android:dropDownWidth="match_parent"
+        android:hint="Company Name"/>
+
+    <EditText
+        android:layout_marginTop="20dp"
+        android:id="@+id/priceEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:inputType="numberDecimal"
+        android:hint="Price in Dollars"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+    <EditText
+        android:id="@+id/dateEditText"
+        android:layout_width="wrap_content"
+        android:textColor="@color/white"
+        android:inputType="none"
+        android:layout_height="wrap_content"
+        android:enabled="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:hint="Date (dd/mm/yyyy)"/>
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@color/capitaViewDarkBlue"
+            android:textColor="@color/white"
+            android:text="Set date"
+            android:id="@+id/setDate"
+            android:layout_marginStart="10dp"
+            />
+
+    </LinearLayout>
+
+    <EditText
+        android:id="@+id/industryEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:inputType="text"
+        android:hint="Industry"/>
+
+    <EditText
+        android:id="@+id/amountEditText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:inputType="number"
+        android:textColor="@color/white"
+        android:hint="Amount of stocks bought"/>
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:background="@color/capitaViewDarkBlue"
+        android:id="@+id/addEntryButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Add Entry"/>
+</LinearLayout>

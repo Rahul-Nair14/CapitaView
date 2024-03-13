@@ -71,9 +71,11 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(),"Welcome "+ userName,Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this,MainDashboard.class);
                             startActivity(intent);
+                            loginPasswordVar.setText("");
+                            loginUserNameVar.setText("");
                             }
                             else {
-                                Toast.makeText(getApplicationContext(),"Login Failed",Toast.LENGTH_SHORT).show();
+                                Toast.makeText(getApplicationContext(),"Incorrect Username or Password",Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -84,7 +86,6 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         });
-
     }
 
     //Checks if email is of valid format

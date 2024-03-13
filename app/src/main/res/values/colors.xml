@@ -2,4 +2,6 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="capitaViewLightBlue">#319BC6</color>
+    <color name="capitaViewDarkBlue">#0F396D</color>
 </resources>

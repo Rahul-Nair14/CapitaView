@@ -32,7 +32,7 @@
         android:id="@+id/registerPageCVTitle"/>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
@@ -54,7 +54,7 @@
         android:id="@+id/registerPageUserNameEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="47dp"
+        android:layout_marginStart="50dp"
         android:layout_marginTop="34dp"
         android:background="@color/white"
         android:textColor="@color/black"
@@ -63,7 +63,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
@@ -85,7 +85,7 @@
         android:id="@+id/registerPagePassWordEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
+        android:layout_marginStart="35dp"
         android:layout_marginTop="13dp"
         android:background="@color/white"
         android:inputType="textPassword"
@@ -94,7 +94,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
@@ -117,7 +117,7 @@
         android:id="@+id/registerPageCPasswordEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
+        android:layout_marginStart="10dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
         android:inputType="textPassword"
@@ -126,7 +126,7 @@
     </LinearLayout>
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_centerHorizontal="true"
@@ -149,7 +149,7 @@
         android:id="@+id/registerPageFullNameEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="34dp"
         android:layout_marginTop="14dp"
         android:background="@color/white"
         android:textColor="@color/black"

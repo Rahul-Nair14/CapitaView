@@ -35,6 +35,7 @@
         android:columnCount="2"
         android:layout_marginTop="30dp"
         android:layout_gravity="center"
+        android:padding="4dp"
         >
 
         <ImageButton
@@ -99,9 +100,9 @@
 
     <androidx.appcompat.widget.AppCompatButton
         android:text="Log out"
-        android:textSize="25sp"
+        android:textSize="18sp"
         android:id="@+id/LogoutButton"
-        android:layout_width="200dp"
+        android:layout_width="125dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:background="#0f396d"

@@ -5,16 +5,19 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.Firebase;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class Registration_activity extends AppCompatActivity {
 
@@ -63,9 +66,23 @@ public class Registration_activity extends AppCompatActivity {
                                 Toast.makeText(getApplicationContext(), "Signup Successful", Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(Registration_activity.this,MainActivity.class);
                                 startActivity(intent);
+                                registerPasswordVar.setText("");
+                                registerUserNameVar.setText("");
+                                registerFullNameVar.setText("");
+                                registerCPasswordVar.setText("");
                                 finish();
-                            }else{
-                                Toast.makeText(getApplicationContext(),"Signup Unsuccessful",Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            if (e instanceof FirebaseAuthUserCollisionException) {
+                                // Email already exists
+                                Toast.makeText(Registration_activity.this, "Email already exists", Toast.LENGTH_SHORT).show();
+                            } else {
+                                // Other errors
+                                Log.e("SignUpActivity", "Error: " + e.getMessage());
+                                Toast.makeText(Registration_activity.this, "Sign up failed. Please try again", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -73,6 +90,7 @@ public class Registration_activity extends AppCompatActivity {
                 else {
                     Toast.makeText(getApplicationContext(),"Invalid Username or password",Toast.LENGTH_SHORT).show();
                 }
+
 
             }
         });
