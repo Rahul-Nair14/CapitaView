@@ -21,9 +21,8 @@ import com.google.firebase.auth.FirebaseAuthUserCollisionException;
 
 public class Registration_activity extends AppCompatActivity {
 
-
     FirebaseAuth firebaseAuth;
-    EditText registerUserNameVar, registerPasswordVar, registerCPasswordVar, registerFullNameVar;
+    EditText registerUserNameVar, registerPasswordVar, registerCPasswordVar;
     Button registerButtonVar;
 
     @Override
@@ -33,7 +32,6 @@ public class Registration_activity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
-        registerFullNameVar = (EditText)findViewById(R.id.registerPageFullNameEntry);
         registerCPasswordVar = (EditText)findViewById(R.id.registerPageCPasswordEntry);
         registerPasswordVar = (EditText)findViewById(R.id.registerPagePassWordEntry);
         registerUserNameVar = (EditText)findViewById(R.id.registerPageUserNameEntry);
@@ -46,9 +44,8 @@ public class Registration_activity extends AppCompatActivity {
                 String userName = registerUserNameVar.getText().toString();
                 String passWord = registerPasswordVar.getText().toString();
                 String cpassword = registerCPasswordVar.getText().toString();
-                String fullName = registerFullNameVar.getText().toString();
 
-                if(userName.isEmpty() || passWord.isEmpty() || cpassword.isEmpty() || fullName.isEmpty())
+                if(userName.isEmpty() || passWord.isEmpty() || cpassword.isEmpty())
                     Toast.makeText(getApplicationContext(),"Invalid Username or password",Toast.LENGTH_SHORT).show();
 
                 else if(!passWord.equals(cpassword))
@@ -68,7 +65,6 @@ public class Registration_activity extends AppCompatActivity {
                                 startActivity(intent);
                                 registerPasswordVar.setText("");
                                 registerUserNameVar.setText("");
-                                registerFullNameVar.setText("");
                                 registerCPasswordVar.setText("");
                                 finish();
                             }

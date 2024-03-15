@@ -2,10 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@color/capitaViewDarkBlue"
     android:padding="16dp">
-
+<LinearLayout
+    android:layout_width="250dp"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    >
     <TextView
         android:id="@+id/companyNameTextView"
         android:layout_width="wrap_content"
@@ -41,15 +45,17 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="Amount: 0"/>
+</LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/removeButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="20dp"
+        android:textSize="12sp"
         android:textColor="@color/capitaViewDarkBlue"
         android:background="@color/white"
-        android:text="Remove"
-        android:layout_gravity="end"
-        android:layout_marginTop="8dp"
+        android:text="Delete"
+        android:layout_gravity="center_vertical"
         />
 </LinearLayout>

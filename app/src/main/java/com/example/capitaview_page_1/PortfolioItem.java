@@ -2,10 +2,13 @@ package com.example.capitaview_page_1;
 
 public class PortfolioItem {
 
-    private String CompanyName, Date, Industry;
+    private String CompanyName, Date, Industry, itemId;
     private int Amount;
     private double Price;
 
+    public PortfolioItem() {
+        // Default constructor required for Firebase
+    }
 
     public PortfolioItem(String companyName, double price, String date, String industry, int amount) {
         CompanyName = companyName;
@@ -13,6 +16,14 @@ public class PortfolioItem {
         Date = date;
         Industry = industry;
         Amount = amount;
+    }
+
+    public String getItemId() {
+        return itemId;
+    }
+
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
     }
 
     public String getCompanyName() {

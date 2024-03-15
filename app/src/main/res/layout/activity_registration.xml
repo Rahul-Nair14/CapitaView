@@ -54,7 +54,7 @@
         android:id="@+id/registerPageUserNameEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="52dp"
         android:layout_marginTop="34dp"
         android:background="@color/white"
         android:textColor="@color/black"
@@ -85,7 +85,7 @@
         android:id="@+id/registerPagePassWordEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="35dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="13dp"
         android:background="@color/white"
         android:inputType="textPassword"
@@ -134,26 +134,6 @@
         android:id="@+id/RegisterFullNameBlock"
         >
 
-    <TextView
-        android:id="@+id/registerPageFullNameCaption"
-        style="@style/MaterialAlertDialog.Material3.Body.Text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="10dp"
-        android:text="Enter Full Name:"
-        android:textColor="#0f396d"
-        android:textSize="20sp" />
-
-    <EditText
-        android:id="@+id/registerPageFullNameEntry"
-        android:layout_width="150dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="34dp"
-        android:layout_marginTop="14dp"
-        android:background="@color/white"
-        android:textColor="@color/black"
-        />
     </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

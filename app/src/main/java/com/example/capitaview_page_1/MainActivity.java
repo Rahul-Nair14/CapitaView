@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.util.Log;
 import android.util.Patterns;
 import android.view.View;
 import android.widget.Button;
@@ -15,16 +16,20 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseAuthInvalidUserException;
+import com.google.firebase.auth.FirebaseAuthUserCollisionException;
+import com.google.firebase.internal.api.FirebaseNoSignedInUserException;
 
 public class MainActivity extends AppCompatActivity {
 
     TextView signInLink;
     EditText loginUserNameVar, loginPasswordVar;
     Button loginButtonVar;
-
     FirebaseAuth firebaseAuth;
 
 
@@ -70,13 +75,17 @@ public class MainActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(),"Welcome "+ userName,Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+                            intent.putExtra("userNameForUse",userName);
+                            intent.putExtra("activityName","Login");
                             startActivity(intent);
                             loginPasswordVar.setText("");
                             loginUserNameVar.setText("");
                             }
-                            else {
-                                Toast.makeText(getApplicationContext(),"Incorrect Username or Password",Toast.LENGTH_SHORT).show();
-                            }
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                                Toast.makeText(MainActivity.this, "Login Failed, Sign up or Try again later", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }

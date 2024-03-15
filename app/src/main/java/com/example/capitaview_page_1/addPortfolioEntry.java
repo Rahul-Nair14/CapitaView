@@ -15,6 +15,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONArray;
@@ -35,8 +38,8 @@ public class addPortfolioEntry extends AppCompatActivity {
     private Spinner companyNameSpinner;
     private EditText priceEditText, dateEditText, industryEditText, amountEditText;
     private Button addEntryButton, setDateButton;
-
     private DatabaseReference portfolioRef;
+    FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,12 +53,18 @@ public class addPortfolioEntry extends AppCompatActivity {
         amountEditText = findViewById(R.id.amountEditText);
         addEntryButton = findViewById(R.id.addEntryButton);
         setDateButton = findViewById(R.id.setDate);
+        mAuth = FirebaseAuth.getInstance();
 
         priceEditText.setText("");
         dateEditText.setText("");
         industryEditText.setText("");
         amountEditText.setText("");
 
+        FirebaseUser mUser = mAuth.getCurrentUser();
+        String uid = mUser.getUid();
+
+        portfolioRef = FirebaseDatabase.getInstance("https://capitaviewdb-default-rtdb.asia-southeast1.firebasedatabase.app/")
+                .getReference().child("Users").child(uid).child("PortfolioItem");
 
         // Fetch list of company names from API and populate spinner
         fetchCompanyNames();
@@ -163,7 +172,9 @@ public class addPortfolioEntry extends AppCompatActivity {
         // Create a new PortfolioEntry object
         PortfolioItem entry = new PortfolioItem(companyName, price, date, industry, amount);
 
-        // Push the entry to the "portfolio" node in the database
+        String itemId = portfolioRef.push().getKey();
+        entry.setItemId(itemId);
+        portfolioRef.child(itemId).setValue(entry);
 
         // Display success message
         Toast.makeText(this, "Portfolio updated", Toast.LENGTH_SHORT).show();
