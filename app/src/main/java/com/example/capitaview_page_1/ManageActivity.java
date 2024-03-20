@@ -53,13 +53,7 @@ public class ManageActivity extends AppCompatActivity {
         userNameForDisplay = findViewById(R.id.manageWelcomeText);
         builder = new AlertDialog.Builder(this);
 
-        Intent intent = getIntent();
-        if (Objects.equals(intent.getStringExtra("activityName"), "mainDashBoard")) {
-            String temp = intent.getStringExtra("userNameFromLogin");
-            userNameForDisplay.setText("Welcome " + temp);
-            userNameForDisplayString = temp;
-        } else
-            userNameForDisplay.setText("Welcome " + userNameForDisplayString);
+        userNameForDisplay.setText("Welcome " + MainDashboard.dashBoardUserNameString);
 
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
@@ -86,6 +80,8 @@ public class ManageActivity extends AppCompatActivity {
                             // Remove item from list
                             portfolioItemList.remove(position);
                             portfolioAdapter.notifyDataSetChanged();
+
+                            Toast.makeText(ManageActivity.this, "Stocks removed", Toast.LENGTH_SHORT).show();
 
                             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override

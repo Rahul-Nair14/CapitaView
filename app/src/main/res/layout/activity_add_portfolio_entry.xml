@@ -37,15 +37,6 @@
         android:dropDownWidth="match_parent"
         android:hint="Company Name"/>
 
-    <EditText
-        android:layout_marginTop="20dp"
-        android:id="@+id/priceEditText"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:inputType="numberDecimal"
-        android:hint="Price in Dollars"/>
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

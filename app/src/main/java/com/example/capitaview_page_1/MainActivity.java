@@ -3,7 +3,9 @@ package com.example.capitaview_page_1;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
@@ -78,8 +80,15 @@ public class MainActivity extends AppCompatActivity {
                             intent.putExtra("userNameForUse",userName);
                             intent.putExtra("activityName","Login");
                             startActivity(intent);
+
+                            SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+                            SharedPreferences.Editor editor = sharedPreferences.edit();
+                            editor.putBoolean("isLoggedIn", true);
+                            editor.apply();
+
                             loginPasswordVar.setText("");
                             loginUserNameVar.setText("");
+                            finish();
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {

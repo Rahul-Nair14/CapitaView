@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -23,8 +24,12 @@ import com.google.firebase.database.FirebaseDatabase;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -32,11 +37,12 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import java.io.IOException;
+import java.util.Locale;
 
 public class addPortfolioEntry extends AppCompatActivity {
 
     private Spinner companyNameSpinner;
-    private EditText priceEditText, dateEditText, industryEditText, amountEditText;
+    private EditText dateEditText, industryEditText, amountEditText;
     private Button addEntryButton, setDateButton;
     private DatabaseReference portfolioRef;
     FirebaseAuth mAuth;
@@ -47,7 +53,6 @@ public class addPortfolioEntry extends AppCompatActivity {
         setContentView(R.layout.activity_add_portfolio_entry);
 
         companyNameSpinner = findViewById(R.id.companyNameSpinner);
-        priceEditText = findViewById(R.id.priceEditText);
         dateEditText = findViewById(R.id.dateEditText);
         industryEditText = findViewById(R.id.industryEditText);
         amountEditText = findViewById(R.id.amountEditText);
@@ -55,7 +60,7 @@ public class addPortfolioEntry extends AppCompatActivity {
         setDateButton = findViewById(R.id.setDate);
         mAuth = FirebaseAuth.getInstance();
 
-        priceEditText.setText("");
+
         dateEditText.setText("");
         industryEditText.setText("");
         amountEditText.setText("");
@@ -83,6 +88,31 @@ public class addPortfolioEntry extends AppCompatActivity {
         });
     }
 
+    private void fetchCompanyNames() {
+        // Check if data is available in cache
+        String cachedData = cacheManager.getListings(this);
+        if (cachedData != null) {
+            // Load data from cache
+            loadCompanyNamesFromCache(cachedData);
+        } else {
+            // Fetch data from API
+            fetchDataFromAPI();
+        }
+    }
+
+    private void loadCompanyNamesFromCache(String cachedData) {
+        // Parse cached data and populate the spinner
+        try {
+            List<String> companyNames = parseCompanyNames(cachedData);
+            ArrayAdapter<String> adapter = new ArrayAdapter<>(addPortfolioEntry.this,
+                    android.R.layout.simple_spinner_item, companyNames);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            companyNameSpinner.setAdapter(adapter);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
 
     private void showDatePickerDialog() {
         // Get current date
@@ -106,7 +136,7 @@ public class addPortfolioEntry extends AppCompatActivity {
         // Show date picker dialog
         datePickerDialog.show();
     }
-    private void fetchCompanyNames() {
+    private void fetchDataFromAPI() {
         OkHttpClient client = new OkHttpClient();
 
         Request request = new Request.Builder()
@@ -133,6 +163,8 @@ public class addPortfolioEntry extends AppCompatActivity {
                                         android.R.layout.simple_spinner_item, companyNames);
                                 adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                 companyNameSpinner.setAdapter(adapter);
+                                cacheManager.saveListings(addPortfolioEntry.this, responseData);
+
                             } catch (Exception e) {
                                 e.printStackTrace();
                             }
@@ -161,10 +193,9 @@ public class addPortfolioEntry extends AppCompatActivity {
     }
 
 
-    private void addPortfolioEntry() {
+    private void addPortfolioEntry(double price) {
         // Get data from EditText fields
         String companyName = companyNameSpinner.getSelectedItem().toString().trim();
-        double price = Double.parseDouble(priceEditText.getText().toString().trim());
         String date = dateEditText.getText().toString().trim();
         String industry = industryEditText.getText().toString().trim();
         int amount = Integer.parseInt(amountEditText.getText().toString().trim());
@@ -179,20 +210,23 @@ public class addPortfolioEntry extends AppCompatActivity {
         // Display success message
         Toast.makeText(this, "Portfolio updated", Toast.LENGTH_SHORT).show();
 
-        startActivity(new Intent(addPortfolioEntry.this, ManageActivity.class));
-
+        Intent intent = new Intent(addPortfolioEntry.this, ManageActivity.class);
+        intent.putExtra("valueOfStock",price);
+        startActivity(intent);
         finish();
     }
 
 
     private void showConfirmationDialog() {
 
-        String priceVar = priceEditText.getText().toString();
+        String companyName = companyNameSpinner.getSelectedItem().toString().trim();
         String industryVar = industryEditText.getText().toString();
         String amountVar = amountEditText.getText().toString();
         String dateVar = dateEditText.getText().toString();
+        String symbol = companyName.substring(companyName.lastIndexOf("(") + 1, companyName.lastIndexOf(")"));
+        double priceOfStock = calculatePrice(symbol, dateVar, amountVar);
 
-        if(priceVar.isEmpty() || industryVar.isEmpty() || amountVar.isEmpty() || dateVar.isEmpty())
+        if(industryVar.isEmpty() || amountVar.isEmpty() || dateVar.isEmpty())
         {
             Toast.makeText(this, "Please Enter all fields", Toast.LENGTH_LONG).show();
         }
@@ -204,11 +238,55 @@ public class addPortfolioEntry extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
 
-                    addPortfolioEntry();
+                    addPortfolioEntry(priceOfStock);
                 }
             });
             builder.setNegativeButton("No", null);
             builder.show();
         }
     }
+
+
+    private double calculatePrice(String symbol, String date, String amount) {
+        // Make API call to fetch historical price data for the selected company and date
+        OkHttpClient client = new OkHttpClient();
+        final double[] valueOfStock = {0.0};
+        Request request = new Request.Builder()
+                .url("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=full&apikey=DBU9W8268XTGDI1Y")
+                .build();
+
+        client.newCall(request).enqueue(new Callback() {
+            @Override
+            public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                e.printStackTrace();
+            }
+
+            @Override
+            public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+                if (response.isSuccessful()) {
+                    try {
+                        String responseData = response.body().string();
+                        Log.d("JSON Response", responseData);
+                        JSONObject jsonData = new JSONObject(response.body().string());
+                        JSONObject timeSeriesData = jsonData.getJSONObject("Time Series (Daily)");
+                        String[] dateParts = date.split("/");
+                        String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0])); // Construct date in YYYY-MM-DD format
+                        JSONObject dayData = timeSeriesData.getJSONObject(formattedDate);
+                        double closingPrice = Double.parseDouble(dayData.getString("4. close"));
+
+                        Log.println(Log.ASSERT,"ERRORRRRR",closingPrice + " || " + dayData.toString() + " || " + formattedDate);
+
+                        valueOfStock[0] = closingPrice;
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        });
+
+        return valueOfStock[0];
+    }
+
+
 }
