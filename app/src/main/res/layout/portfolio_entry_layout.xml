@@ -45,6 +45,14 @@
         android:layout_height="wrap_content"
         android:textColor="@color/white"
         android:text="Amount: 0"/>
+
+    <TextView
+        android:id="@+id/totalPriceTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:textColor="@color/white"
+        android:text="Total Price: 0.0"/>
 </LinearLayout>
 
     <androidx.appcompat.widget.AppCompatButton

@@ -4,18 +4,20 @@ public class PortfolioItem {
 
     private String CompanyName, Date, Industry, itemId;
     private int Amount;
-    private double Price;
+    private double Price, TotalPrice;
 
     public PortfolioItem() {
         // Default constructor required for Firebase
     }
 
-    public PortfolioItem(String companyName, double price, String date, String industry, int amount) {
+
+    public PortfolioItem(String companyName, double price, String date, String industry, int amount, double totalPrice) {
         CompanyName = companyName;
         Price = price;
         Date = date;
         Industry = industry;
         Amount = amount;
+        TotalPrice = totalPrice;
     }
 
     public String getItemId() {
@@ -65,4 +67,13 @@ public class PortfolioItem {
     public void setAmount(int amount) {
         Amount = amount;
     }
+
+    public double getTotalPrice() {
+        return TotalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        TotalPrice = totalPrice;
+    }
+
 }

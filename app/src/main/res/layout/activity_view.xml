@@ -1,9 +1,58 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ViewActivity">
+    android:background="@color/capitaViewDarkBlue"
+    >
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_width="150dp"
+        android:layout_marginStart="20dp"
+        android:layout_height="150dp"
+        android:src="@drawable/view"
+        android:layout_gravity="center"
+        android:id="@+id/viewPageCVLogo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:text="Welcome"
+        android:id="@+id/viewWelcomeText"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="60dp"
+        android:layout_toRightOf="@+id/viewPageCVLogo"
+        />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:layout_below="@+id/viewWelcomeText"
+        android:text="Current Date"
+        android:id="@+id/viewDateText"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_toRightOf="@+id/viewPageCVLogo"
+        />
+
+    <ListView
+        android:layout_below="@+id/viewPageCVLogo"
+        android:background="@color/white"
+        android:layout_marginTop="30dp"
+        android:id="@+id/ViewItemListView"
+        android:layout_width="match_parent"
+        android:layout_height="650dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:divider="@color/white"
+        android:dividerHeight="1dp"
+        />
+
+</RelativeLayout>

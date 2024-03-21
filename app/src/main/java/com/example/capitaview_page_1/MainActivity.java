@@ -94,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
                     }).addOnFailureListener(new OnFailureListener() {
                         @Override
                         public void onFailure(@NonNull Exception e) {
-                                Toast.makeText(MainActivity.this, "Login Failed, Sign up or Try again later", Toast.LENGTH_SHORT).show();
+                                handleException(e);
                         }
                     });
                 }
@@ -109,6 +109,17 @@ public class MainActivity extends AppCompatActivity {
     //Checks if email is of valid format
     public static boolean isValidEmail(CharSequence target) {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
+    }
+
+    private void handleException(Exception e) {
+        if (e instanceof FirebaseAuthInvalidUserException) {
+            Toast.makeText(MainActivity.this, "Invalid user. Please sign up.", Toast.LENGTH_SHORT).show();
+        } else if (e instanceof FirebaseAuthInvalidCredentialsException) {
+            Toast.makeText(MainActivity.this, "Invalid credentials or Invalid user, Please try again or sign up", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(MainActivity.this, "Login failed. Please try again later.", Toast.LENGTH_SHORT).show();
+            Log.e("LoginError", "Error: " + e.getMessage());
+        }
     }
 
 }

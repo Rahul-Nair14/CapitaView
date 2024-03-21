@@ -46,6 +46,7 @@ public class PortfolioAdapter extends ArrayAdapter<PortfolioItem> {
         TextView dateTextView = listItemView.findViewById(R.id.dateTextView);
         TextView industryTextView = listItemView.findViewById(R.id.industryTextView);
         TextView amountTextView = listItemView.findViewById(R.id.amountTextView);
+        TextView totalPriceTextView = listItemView.findViewById(R.id.totalPriceTextView);
         Button removeButton = listItemView.findViewById(R.id.removeButton);
 
 
@@ -54,6 +55,7 @@ public class PortfolioAdapter extends ArrayAdapter<PortfolioItem> {
         dateTextView.setText("Date: " + currentItem.getDate());
         industryTextView.setText("Industry: " + currentItem.getIndustry());
         amountTextView.setText("Amount: " + currentItem.getAmount());
+        totalPriceTextView.setText("Total Price: $"+currentItem.getTotalPrice());
 
         removeButton.setOnClickListener(new View.OnClickListener() {
             @Override

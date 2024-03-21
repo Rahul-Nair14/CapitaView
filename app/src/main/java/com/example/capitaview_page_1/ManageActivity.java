@@ -34,9 +34,7 @@ public class ManageActivity extends AppCompatActivity {
     private PortfolioAdapter portfolioAdapter;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-    private static String userNameForDisplayString;
     TextView userNameForDisplay;
-
     AlertDialog.Builder builder;
 
 
@@ -76,7 +74,6 @@ public class ManageActivity extends AppCompatActivity {
 
                             // Remove item from Firebase Realtime Database
                             databaseReference.child(selectedItem.getItemId()).removeValue();
-
                             // Remove item from list
                             portfolioItemList.remove(position);
                             portfolioAdapter.notifyDataSetChanged();
@@ -95,7 +92,7 @@ public class ManageActivity extends AppCompatActivity {
 
                                 @Override
                                 public void onCancelled(@NonNull DatabaseError error) {
-
+                                    Toast.makeText(ManageActivity.this, "Failed to retrieve data", Toast.LENGTH_SHORT).show();
                                 }
                             });
                         }
@@ -124,7 +121,7 @@ public class ManageActivity extends AppCompatActivity {
 
                 @Override
                 public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                    Toast.makeText(ManageActivity.this, "Failed to retrieve data", Toast.LENGTH_SHORT).show();
                 }
             });
 
@@ -133,7 +130,6 @@ public class ManageActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                     // Handle item click here
-                    Toast.makeText(ManageActivity.this, "Item Clicked", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -151,8 +147,5 @@ public class ManageActivity extends AppCompatActivity {
             }
         });
 
-
     }
-
-
 }

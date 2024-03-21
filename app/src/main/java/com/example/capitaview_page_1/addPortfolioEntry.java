@@ -60,7 +60,6 @@ public class addPortfolioEntry extends AppCompatActivity {
         setDateButton = findViewById(R.id.setDate);
         mAuth = FirebaseAuth.getInstance();
 
-
         dateEditText.setText("");
         industryEditText.setText("");
         amountEditText.setText("");
@@ -70,6 +69,7 @@ public class addPortfolioEntry extends AppCompatActivity {
 
         portfolioRef = FirebaseDatabase.getInstance("https://capitaviewdb-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference().child("Users").child(uid).child("PortfolioItem");
+
 
         // Fetch list of company names from API and populate spinner
         fetchCompanyNames();
@@ -98,6 +98,7 @@ public class addPortfolioEntry extends AppCompatActivity {
             // Fetch data from API
             fetchDataFromAPI();
         }
+
     }
 
     private void loadCompanyNamesFromCache(String cachedData) {
@@ -133,9 +134,11 @@ public class addPortfolioEntry extends AppCompatActivity {
                 },
                 year, month, dayOfMonth);
 
+        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         // Show date picker dialog
         datePickerDialog.show();
     }
+
     private void fetchDataFromAPI() {
         OkHttpClient client = new OkHttpClient();
 
@@ -199,9 +202,10 @@ public class addPortfolioEntry extends AppCompatActivity {
         String date = dateEditText.getText().toString().trim();
         String industry = industryEditText.getText().toString().trim();
         int amount = Integer.parseInt(amountEditText.getText().toString().trim());
+        double totalPrice = amount * price;
 
         // Create a new PortfolioEntry object
-        PortfolioItem entry = new PortfolioItem(companyName, price, date, industry, amount);
+        PortfolioItem entry = new PortfolioItem(companyName, price, date, industry, amount, totalPrice);
 
         String itemId = portfolioRef.push().getKey();
         entry.setItemId(itemId);
@@ -237,7 +241,6 @@ public class addPortfolioEntry extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-
                     addPortfolioEntry(priceOfStock);
                 }
             });
@@ -250,9 +253,10 @@ public class addPortfolioEntry extends AppCompatActivity {
     private double calculatePrice(String symbol, String date, String amount) {
         // Make API call to fetch historical price data for the selected company and date
         OkHttpClient client = new OkHttpClient();
-        final double[] valueOfStock = {0.0};
+        double[] valueOfStock = {0.0};
         Request request = new Request.Builder()
-                .url("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=" + symbol + "&outputsize=full&apikey=DBU9W8268XTGDI1Y")
+                .url("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
+                        + symbol + "&outputsize=full&apikey=DBU9W8268XTGDI1Y")
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
@@ -272,11 +276,15 @@ public class addPortfolioEntry extends AppCompatActivity {
                         String[] dateParts = date.split("/");
                         String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0])); // Construct date in YYYY-MM-DD format
                         JSONObject dayData = timeSeriesData.getJSONObject(formattedDate);
-                        double closingPrice = Double.parseDouble(dayData.getString("4. close"));
 
-                        Log.println(Log.ASSERT,"ERRORRRRR",closingPrice + " || " + dayData.toString() + " || " + formattedDate);
-
-                        valueOfStock[0] = closingPrice;
+                        if(dayData!=null) {
+                            double closingPrice = Double.parseDouble(dayData.getString("4. close"));
+                            valueOfStock[0] = closingPrice;
+                        }
+                        else {
+                            Toast.makeText(addPortfolioEntry.this, "No data found for that date, try another date",Toast.LENGTH_SHORT).show();
+                            Log.println(Log.ASSERT, "ERRORRRRR", valueOfStock[0] + " || " + dayData.toString() + " || " + formattedDate);
+                        }
 
                     } catch (Exception e) {
                         e.printStackTrace();
@@ -287,6 +295,5 @@ public class addPortfolioEntry extends AppCompatActivity {
 
         return valueOfStock[0];
     }
-
 
 }
