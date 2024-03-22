@@ -33,17 +33,17 @@ public class SplashActivity extends AppCompatActivity {
             public void run() {
                 // Redirect user based on login state
                 // Uncomment this when you release the final beta
-//                if (isLoggedIn) {
-//                    // User is logged in, redirect to the appropriate activity
-//                    Intent intent = new Intent(SplashActivity.this, MainDashboard.class);
-//                    startActivity(intent);
-//                    finish(); // Finish splash activity to prevent user from coming back here by pressing back button
-//                } else {
+                if (isLoggedIn) {
+                    // User is logged in, redirect to the appropriate activity
+                    Intent intent = new Intent(SplashActivity.this, MainDashboard.class);
+                    startActivity(intent);
+                    finish(); // Finish splash activity to prevent user from coming back here by pressing back button
+                } else {
                     // User is not logged in, redirect to the login activity
                     Intent intent = new Intent(SplashActivity.this, MainActivity.class);
                     startActivity(intent);
                     finish(); // Finish splash activity to prevent user from coming back here by pressing back button
-              //  }
+                }
             }
         },4500);
 

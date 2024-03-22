@@ -152,7 +152,9 @@
                 android:text="% Change" />
         </TableRow>
 
-        <TableRow>
+        <TableRow
+            android:padding="2dp"
+            >
 
             <TextView
                 android:id="@+id/openValueTextView"
@@ -161,12 +163,14 @@
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 android:text="Open Value" />
 
             <TextView
                 android:id="@+id/lowValueTextView"
                 android:gravity="center_horizontal"
                 android:layout_width="0dp"
+                android:textSize="11sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/white"
@@ -175,6 +179,7 @@
             <TextView
                 android:id="@+id/highValueTextView"
                 android:layout_width="0dp"
+                android:textSize="11sp"
                 android:gravity="center_horizontal"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -185,6 +190,7 @@
                 android:id="@+id/volumeTextView"
                 android:gravity="center_horizontal"
                 android:layout_width="0dp"
+                android:textSize="11sp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:textColor="@color/white"
@@ -197,6 +203,7 @@
                 android:textColor="@color/white"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 android:text="Close Value" />
 
             <TextView
@@ -205,15 +212,16 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
+                android:textSize="11sp"
                 android:textColor="@color/white"
                 android:text="Price" />
-            <!-- Percentage change -->
 
             <TextView
                 android:id="@+id/percentageChangeTextView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_span="2"
+                android:textSize="11sp"
                 android:textColor="@color/white"
                 android:gravity="center_horizontal"
                 android:text="Change" />

@@ -96,6 +96,7 @@ public class addPortfolioEntry extends AppCompatActivity {
             loadCompanyNamesFromCache(cachedData);
         } else {
             // Fetch data from API
+
             fetchDataFromAPI();
         }
 
@@ -122,6 +123,14 @@ public class addPortfolioEntry extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
+        // Subtract one day from the current date
+        calendar.add(Calendar.DAY_OF_MONTH, -1);
+
+        // Get the updated year, month, and dayOfMonth
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+
         // Create date picker dialog
         DatePickerDialog datePickerDialog = new DatePickerDialog(
                 addPortfolioEntry.this,
@@ -134,10 +143,11 @@ public class addPortfolioEntry extends AppCompatActivity {
                 },
                 year, month, dayOfMonth);
 
-        datePickerDialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         // Show date picker dialog
         datePickerDialog.show();
     }
+
 
     private void fetchDataFromAPI() {
         OkHttpClient client = new OkHttpClient();
@@ -156,7 +166,6 @@ public class addPortfolioEntry extends AppCompatActivity {
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
                 if (response.isSuccessful()) {
                     final String responseData = response.body().string();
-
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -204,8 +213,11 @@ public class addPortfolioEntry extends AppCompatActivity {
         int amount = Integer.parseInt(amountEditText.getText().toString().trim());
         double totalPrice = amount * price;
 
+        double tempTotalPrice = Double.parseDouble(String.format("%.2f",totalPrice));
+        double tempPrice = Double.parseDouble(String.format("%.2f",price));
+
         // Create a new PortfolioEntry object
-        PortfolioItem entry = new PortfolioItem(companyName, price, date, industry, amount, totalPrice);
+        PortfolioItem entry = new PortfolioItem(companyName, tempPrice, date, industry, amount, tempTotalPrice);
 
         String itemId = portfolioRef.push().getKey();
         entry.setItemId(itemId);
@@ -215,7 +227,6 @@ public class addPortfolioEntry extends AppCompatActivity {
         Toast.makeText(this, "Portfolio updated", Toast.LENGTH_SHORT).show();
 
         Intent intent = new Intent(addPortfolioEntry.this, ManageActivity.class);
-        intent.putExtra("valueOfStock",price);
         startActivity(intent);
         finish();
     }
@@ -228,7 +239,6 @@ public class addPortfolioEntry extends AppCompatActivity {
         String amountVar = amountEditText.getText().toString();
         String dateVar = dateEditText.getText().toString();
         String symbol = companyName.substring(companyName.lastIndexOf("(") + 1, companyName.lastIndexOf(")"));
-        double priceOfStock = calculatePrice(symbol, dateVar, amountVar);
 
         if(industryVar.isEmpty() || amountVar.isEmpty() || dateVar.isEmpty())
         {
@@ -241,7 +251,7 @@ public class addPortfolioEntry extends AppCompatActivity {
             builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialogInterface, int i) {
-                    addPortfolioEntry(priceOfStock);
+                    calculatePriceAndAddPortfolioEntry(symbol, dateVar);
                 }
             });
             builder.setNegativeButton("No", null);
@@ -250,10 +260,9 @@ public class addPortfolioEntry extends AppCompatActivity {
     }
 
 
-    private double calculatePrice(String symbol, String date, String amount) {
+    private void calculatePriceAndAddPortfolioEntry(String symbol, String date) {
         // Make API call to fetch historical price data for the selected company and date
         OkHttpClient client = new OkHttpClient();
-        double[] valueOfStock = {0.0};
         Request request = new Request.Builder()
                 .url("https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol="
                         + symbol + "&outputsize=full&apikey=DBU9W8268XTGDI1Y")
@@ -267,33 +276,37 @@ public class addPortfolioEntry extends AppCompatActivity {
 
             @Override
             public void onResponse(@NonNull Call call, @NonNull Response response) throws IOException {
+
                 if (response.isSuccessful()) {
-                    try {
-                        String responseData = response.body().string();
-                        Log.d("JSON Response", responseData);
-                        JSONObject jsonData = new JSONObject(response.body().string());
-                        JSONObject timeSeriesData = jsonData.getJSONObject("Time Series (Daily)");
-                        String[] dateParts = date.split("/");
-                        String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0])); // Construct date in YYYY-MM-DD format
-                        JSONObject dayData = timeSeriesData.getJSONObject(formattedDate);
+                    final String responseData = response.body().string();
 
-                        if(dayData!=null) {
-                            double closingPrice = Double.parseDouble(dayData.getString("4. close"));
-                            valueOfStock[0] = closingPrice;
-                        }
-                        else {
-                            Toast.makeText(addPortfolioEntry.this, "No data found for that date, try another date",Toast.LENGTH_SHORT).show();
-                            Log.println(Log.ASSERT, "ERRORRRRR", valueOfStock[0] + " || " + dayData.toString() + " || " + formattedDate);
-                        }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                JSONObject jsonData = new JSONObject(responseData);
+                                JSONObject timeSeriesData = jsonData.getJSONObject("Time Series (Daily)");
+                                String[] dateParts = date.split("/");
+                                String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0])); // Construct date in YYYY-MM-DD format
+                                JSONObject dayData = timeSeriesData.getJSONObject(formattedDate);
+                                if(dayData!=null) {
+                                    double closingPrice = Double.parseDouble(dayData.getString("4. close"));
+                                    addPortfolioEntry(closingPrice);
+                                }
+                                else {
+                                    Toast.makeText(addPortfolioEntry.this, "No data found for that date, try another date",Toast.LENGTH_SHORT).show();
+                                }
 
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
+                            } catch (Exception e) {
+                                Toast.makeText(addPortfolioEntry.this, "No data found for that date, try another date",Toast.LENGTH_SHORT).show();
+                                e.printStackTrace();
+                            }
+                        }
+                    });
                 }
             }
         });
 
-        return valueOfStock[0];
     }
 
 }

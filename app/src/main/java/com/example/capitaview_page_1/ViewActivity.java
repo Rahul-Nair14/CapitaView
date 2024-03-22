@@ -42,6 +42,7 @@ public class ViewActivity extends AppCompatActivity {
     private ViewActivityAdapter viewActivityAdapter;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
+    TextView totalInvestmentValue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,8 @@ public class ViewActivity extends AppCompatActivity {
         currentDate.setText(setDate());
         welcomeText = (TextView)findViewById(R.id.viewWelcomeText);
         welcomeText.setText("Welcome " + MainDashboard.dashBoardUserNameString);
+
+        totalInvestmentValue = (TextView) findViewById(R.id.viewTotalInvestmentValue);
 
         viewListView = findViewById(R.id.ViewItemListView);
         viewActivityItemList = new ArrayList<>();
@@ -70,13 +73,19 @@ public class ViewActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     viewActivityItemList.clear();
+                    double totalPortfolioValue = 0.0, tempTotalPortfolioValue;
                     if (dataSnapshot.exists()) {
                         // User has stocks in the database, populate the ListView
+                        int position = 0; // Initialize position counter
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ViewActivityItem viewActivityItem = snapshot.getValue(ViewActivityItem.class);
-                            fetchRealTimeDataAndUpdateViews(viewActivityItem);
+                            fetchRealTimeDataAndUpdateViews(viewActivityItem,position);
+                            totalPortfolioValue += viewActivityItem.getTotalPrice();
                             viewActivityItemList.add(viewActivityItem);
+                            position++;
                         }
+                        tempTotalPortfolioValue = Double.parseDouble(String.format("%.2f",totalPortfolioValue));
+                        totalInvestmentValue.setText("Total investment: "+Double.toString(tempTotalPortfolioValue));
                         viewActivityAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getApplicationContext(), "No stocks in Portfolio, Add to continue", Toast.LENGTH_LONG).show();
@@ -114,7 +123,7 @@ public class ViewActivity extends AppCompatActivity {
         return currentDate;
     }
 
-    private void fetchRealTimeDataAndUpdateViews(ViewActivityItem item) {
+    private void fetchRealTimeDataAndUpdateViews(ViewActivityItem item, int position) {
         // Make API request to Alpha Vantage to fetch real-time data
 
         String symbol = item.getCompanyName().substring(item.getCompanyName().lastIndexOf("(") + 1, item.getCompanyName().lastIndexOf(")"));
@@ -142,10 +151,10 @@ public class ViewActivity extends AppCompatActivity {
                             try {
                                 JSONObject jsonData = new JSONObject(responseData);
                                 JSONObject globalquote = jsonData.getJSONObject("Global Quote");
-                                double closeValue = Double.parseDouble(globalquote.getString("05. price"));
-                                double openValue = Double.parseDouble(globalquote.getString("02. open"));
-                                double highValue = Double.parseDouble(globalquote.getString("03. high"));
-                                double lowValue = Double.parseDouble(globalquote.getString("04. low"));
+                                double closeValue = Double.parseDouble(String.format("%.2f",Double.parseDouble(globalquote.getString("05. price"))));
+                                double openValue = Double.parseDouble(String.format("%.2f",Double.parseDouble(globalquote.getString("02. open"))));
+                                double highValue = Double.parseDouble(String.format("%.2f",Double.parseDouble(globalquote.getString("03. high"))));
+                                double lowValue = Double.parseDouble(String.format("%.2f",Double.parseDouble(globalquote.getString("04. low"))));
                                 int volume = Integer.parseInt(globalquote.getString("06. volume"));
                                 item.setCloseValue(closeValue);
                                 item.setOpenValue(openValue);
@@ -161,8 +170,10 @@ public class ViewActivity extends AppCompatActivity {
                                 } else if (percentageChange < 0) {
                                     item.setPercentageChangeColor(Color.RED); // Set color to red
                                 } else {
-                                    item.setPercentageChangeColor(Color.BLACK); // Set color to black for no change
+                                    item.setPercentageChangeColor(Color.WHITE); // Set color to black for no change
                                 }
+
+                                updateItem(position,item);
 
                             } catch (JSONException e) {
                                 e.printStackTrace();
@@ -173,4 +184,12 @@ public class ViewActivity extends AppCompatActivity {
             }
         });
     }
+
+    private void updateItem(int position, ViewActivityItem item) {
+        // Update the item in the list at the given position
+        viewActivityItemList.set(position, item);
+        // Notify the adapter that the data has changed for this specific item
+        viewActivityAdapter.notifyDataSetChanged();
+    }
+
 }

@@ -23,6 +23,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 import java.util.Objects;
 
@@ -34,7 +35,7 @@ public class ManageActivity extends AppCompatActivity {
     private PortfolioAdapter portfolioAdapter;
     private DatabaseReference databaseReference;
     private FirebaseAuth mAuth;
-    TextView userNameForDisplay;
+    TextView userNameForDisplay, dateForDisplay;
     AlertDialog.Builder builder;
 
 
@@ -49,6 +50,8 @@ public class ManageActivity extends AppCompatActivity {
         portfolioListView.setAdapter(portfolioAdapter);
 
         userNameForDisplay = findViewById(R.id.manageWelcomeText);
+        dateForDisplay = findViewById(R.id.manageDateHeadingText);
+        dateForDisplay.setText(setDate());
         builder = new AlertDialog.Builder(this);
 
         userNameForDisplay.setText("Welcome " + MainDashboard.dashBoardUserNameString);
@@ -147,5 +150,15 @@ public class ManageActivity extends AppCompatActivity {
             }
         });
 
+    }
+
+    String setDate() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(Calendar.YEAR);
+        int month = calendar.get(Calendar.MONTH) + 1; // Month is zero-based, so add 1
+        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        String currentDate = String.format("%02d-%02d-%04d", dayOfMonth, month, year);
+
+        return currentDate;
     }
 }
