@@ -93,7 +93,7 @@ public class ViewActivity extends AppCompatActivity {
                         }
                         //Temporary variable to get trimmed double value
                         tempTotalPortfolioValue = Double.parseDouble(String.format("%.2f",totalPortfolioValue));
-                        totalInvestmentValue.setText("Total investment: "+Double.toString(tempTotalPortfolioValue));
+                        totalInvestmentValue.setText("Total investment: $"+Double.toString(tempTotalPortfolioValue));
                         viewActivityAdapter.notifyDataSetChanged();
                     } else {
                         Toast.makeText(getApplicationContext(), "No stocks in Portfolio, Add to continue", Toast.LENGTH_LONG).show();
