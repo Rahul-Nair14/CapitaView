@@ -44,6 +44,7 @@ public class ManageActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage);
 
+        //Initializing the adapter to display the portfolio items
         portfolioListView = findViewById(R.id.portfolioListView);
         portfolioItemList = new ArrayList<>();
         portfolioAdapter = new PortfolioAdapter(this, portfolioItemList);
@@ -51,11 +52,14 @@ public class ManageActivity extends AppCompatActivity {
 
         userNameForDisplay = findViewById(R.id.manageWelcomeText);
         dateForDisplay = findViewById(R.id.manageDateHeadingText);
+
+        //set current date at the top of the layout
         dateForDisplay.setText(setDate());
+        //confirmation dialog for deletion of stocks
         builder = new AlertDialog.Builder(this);
-
+        //Displays the name of the user on top of the layout
         userNameForDisplay.setText("Welcome " + MainDashboard.dashBoardUserNameString);
-
+        //Firebase current user is gotten
         mAuth = FirebaseAuth.getInstance();
         FirebaseUser currentUser = mAuth.getCurrentUser();
 
@@ -64,11 +68,14 @@ public class ManageActivity extends AppCompatActivity {
             String uid = currentUser.getUid();
             databaseReference = FirebaseDatabase.getInstance("https://capitaviewdb-default-rtdb.asia-southeast1.firebasedatabase.app/")
                     .getReference().child("Users").child(uid).child("PortfolioItem");
+
+            //Deletion of present stocks, Logic for deletion of stocks from database and updating manage activity list
             portfolioAdapter.setOnDeleteButtonClickListener(new PortfolioAdapter.OnDeleteButtonClickListener() {
                 @Override
                 public void onDeleteButtonClick(int position) {
 
                     PortfolioItem selectedItem = portfolioItemList.get(position);
+                    //using alert dialog to display confirmations
                     builder.setTitle("Confirm");
                     builder.setMessage("Are you sure you want to delete the entry?");
                     builder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
@@ -83,6 +90,7 @@ public class ManageActivity extends AppCompatActivity {
 
                             Toast.makeText(ManageActivity.this, "Stocks removed", Toast.LENGTH_SHORT).show();
 
+                            //If no stocks present in database after deletion, we load up addPortfolio activity by default
                             databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
                                 @Override
                                 public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -116,6 +124,7 @@ public class ManageActivity extends AppCompatActivity {
                         }
                         portfolioAdapter.notifyDataSetChanged();
                     } else {
+                        //If no data in database, we prompt user to add stocks
                         Toast.makeText(getApplicationContext(), "No stocks in Portfolio, Add to continue", Toast.LENGTH_LONG).show();
                         startActivity(new Intent(ManageActivity.this, addPortfolioEntry.class));
                         finish();
@@ -128,7 +137,7 @@ public class ManageActivity extends AppCompatActivity {
                 }
             });
 
-            // Handle ListView item click events
+            // Handle ListView item click events - dummy method
             portfolioListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -141,6 +150,7 @@ public class ManageActivity extends AppCompatActivity {
             finish(); // Finish this activity to prevent going back
         }
 
+        //Adding new stocks
         addStocksButton = (Button) findViewById(R.id.AddStocksButton);
         addStocksButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -152,6 +162,7 @@ public class ManageActivity extends AppCompatActivity {
 
     }
 
+    //Setting the current date for the layout
     String setDate() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);

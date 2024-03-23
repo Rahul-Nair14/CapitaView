@@ -49,13 +49,18 @@ public class ViewActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view);
 
+        //Getting the currentDate to display on top of the activity
         currentDate = (TextView) findViewById(R.id.viewDateText);
         currentDate.setText(setDate());
+        //Getting the username from the MainDashboard since we can access
+        //view activity only through dashboard
         welcomeText = (TextView)findViewById(R.id.viewWelcomeText);
         welcomeText.setText("Welcome " + MainDashboard.dashBoardUserNameString);
 
+        //Displays total investment value on top
         totalInvestmentValue = (TextView) findViewById(R.id.viewTotalInvestmentValue);
 
+        //Initializing the adapter for showing all the stocks of the user with complete data
         viewListView = findViewById(R.id.ViewItemListView);
         viewActivityItemList = new ArrayList<>();
         viewActivityAdapter = new ViewActivityAdapter(this, viewActivityItemList);
@@ -80,10 +85,13 @@ public class ViewActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             ViewActivityItem viewActivityItem = snapshot.getValue(ViewActivityItem.class);
                             fetchRealTimeDataAndUpdateViews(viewActivityItem,position);
+                            //Getting the totalInvestment Value to display on the ViewActivity
                             totalPortfolioValue += viewActivityItem.getTotalPrice();
                             viewActivityItemList.add(viewActivityItem);
+                            //Need position to correctly update the realtime data
                             position++;
                         }
+                        //Temporary variable to get trimmed double value
                         tempTotalPortfolioValue = Double.parseDouble(String.format("%.2f",totalPortfolioValue));
                         totalInvestmentValue.setText("Total investment: "+Double.toString(tempTotalPortfolioValue));
                         viewActivityAdapter.notifyDataSetChanged();
@@ -99,6 +107,7 @@ public class ViewActivity extends AppCompatActivity {
                 }
             });
 
+            //Dummy Item Click, we dont want item clicks
             viewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -113,6 +122,7 @@ public class ViewActivity extends AppCompatActivity {
 
     }
 
+    //Sets the current date at the top of the activity
     String setDate() {
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
@@ -123,9 +133,10 @@ public class ViewActivity extends AppCompatActivity {
         return currentDate;
     }
 
+    //Fetches Real time data for the user from alpha vantage using the symbol of the company
     private void fetchRealTimeDataAndUpdateViews(ViewActivityItem item, int position) {
         // Make API request to Alpha Vantage to fetch real-time data
-
+        // for open,close,high,low and volume data
         String symbol = item.getCompanyName().substring(item.getCompanyName().lastIndexOf("(") + 1, item.getCompanyName().lastIndexOf(")"));
         OkHttpClient client = new OkHttpClient();
         Request request = new Request.Builder()
@@ -136,8 +147,8 @@ public class ViewActivity extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Toast.makeText(ViewActivity.this, "Connection Failed. Please try again later", Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
-                // Handle failure, e.g., display an error message
             }
 
             @Override
@@ -148,6 +159,7 @@ public class ViewActivity extends AppCompatActivity {
                         @Override
                         public void run() {
 
+                            //Getting the jsondata from API and getting required realtime values of the company needed
                             try {
                                 JSONObject jsonData = new JSONObject(responseData);
                                 JSONObject globalquote = jsonData.getJSONObject("Global Quote");
@@ -161,6 +173,7 @@ public class ViewActivity extends AppCompatActivity {
                                 item.setLowValue(lowValue);
                                 item.setHighValue(highValue);
                                 item.setVolume(volume);
+                                //calculating percentage loss and profit and displaying
                                 double percentageChange = ((closeValue - item.getPrice()) / item.getPrice()) * 100;
                                 item.setPercentchange(percentageChange);
 
@@ -176,6 +189,7 @@ public class ViewActivity extends AppCompatActivity {
                                 updateItem(position,item);
 
                             } catch (JSONException e) {
+                                Toast.makeText(ViewActivity.this, "Failed to load data. Please try again later",Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -184,6 +198,7 @@ public class ViewActivity extends AppCompatActivity {
             }
         });
     }
+
 
     private void updateItem(int position, ViewActivityItem item) {
         // Update the item in the list at the given position

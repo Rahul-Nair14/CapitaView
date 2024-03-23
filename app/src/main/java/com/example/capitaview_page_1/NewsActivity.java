@@ -38,7 +38,7 @@ public class NewsActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_news);
 
-
+        //Initializing all lists to load the data from the API
         newsListView = (ListView)findViewById(R.id.NewsListView);
         headlinesList = new ArrayList<>();
         articlesList = new ArrayList<>();
@@ -48,8 +48,10 @@ public class NewsActivity extends AppCompatActivity {
 
         headlines = new ArrayList<>();
 
+        //Fetching only economic news from the NEWS API
         fetchEconomicNews();
 
+        //Uses the custom array adapter to set up the Headlines
         adapter = new HeadlineAdapter(this, headlines);
         // Attach the adapter to a ListView
         newsListView.setAdapter(adapter);
@@ -62,6 +64,7 @@ public class NewsActivity extends AppCompatActivity {
                 String articleImage = imagesList.get(position);
                 String articleSource = sourcesList.get(position);
 
+                // Sends the required fields to the next activity which displays each individual article
                 Intent intent = new Intent(NewsActivity.this, Articles.class);
                 intent.putExtra("title", articleTitle);
                 intent.putExtra("description", articleDescription);
@@ -74,6 +77,7 @@ public class NewsActivity extends AppCompatActivity {
 
     }
 
+    //We use the NEWS Api which provides Business news from the USA
     private void fetchEconomicNews() {
         OkHttpClient client = new OkHttpClient();
         String url = "https://newsapi.org/v2/top-headlines?country=us&category=business&apiKey=ec2e4544397a407f85e540d8d1cbde3e";
@@ -99,6 +103,7 @@ public class NewsActivity extends AppCompatActivity {
                 if (response.isSuccessful()) {
                     final String responseData = response.body().string();
                     try {
+                        // We add the data from the JSONObject into each individual list sequentially
                         JSONObject jsonObject = new JSONObject(responseData);
                         JSONArray articlesArray = jsonObject.getJSONArray("articles");
                         headlinesList.clear();
@@ -130,6 +135,7 @@ public class NewsActivity extends AppCompatActivity {
                             }
                         });
                     } catch (JSONException e) {
+                        Toast.makeText(NewsActivity.this, "Please try again later", Toast.LENGTH_SHORT).show();
                         e.printStackTrace();
                     }
                 }

@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //Initializing
         signInLink = (TextView) findViewById(R.id.loginSignInLink);
         loginUserNameVar = (EditText)findViewById(R.id.LoginPageUserNameEntry);
         loginPasswordVar = (EditText)findViewById(R.id.LoginPagePassWordEntry);
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
 
         firebaseAuth = FirebaseAuth.getInstance();
 
+        //Registration activity text onClick
         signInLink.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,15 +79,16 @@ public class MainActivity extends AppCompatActivity {
                             if(task.isSuccessful()){
                             Toast.makeText(getApplicationContext(),"Welcome "+ userName,Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(MainActivity.this,MainDashboard.class);
+                            //Sending username for displaying in all other activities
                             intent.putExtra("userNameForUse",userName);
                             intent.putExtra("activityName","Login");
                             startActivity(intent);
-
+                            //Telling app that we have logged in
                             SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = sharedPreferences.edit();
                             editor.putBoolean("isLoggedIn", true);
                             editor.apply();
-
+                            //Deleting Text to refresh
                             loginPasswordVar.setText("");
                             loginUserNameVar.setText("");
                             finish();
@@ -111,6 +114,7 @@ public class MainActivity extends AppCompatActivity {
         return (!TextUtils.isEmpty(target) && Patterns.EMAIL_ADDRESS.matcher(target).matches());
     }
 
+    //Handles all exceptions
     private void handleException(Exception e) {
         if (e instanceof FirebaseAuthInvalidUserException) {
             Toast.makeText(MainActivity.this, "Invalid user. Please sign up.", Toast.LENGTH_SHORT).show();

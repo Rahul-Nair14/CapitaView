@@ -23,6 +23,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
+//Template for ViewActivity items which are added to the list after updating values from
+//both Alphavantage as well as Firebase User values
 public class ViewActivityAdapter extends ArrayAdapter<ViewActivityItem> {
 
     private Context context;

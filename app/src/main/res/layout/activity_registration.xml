@@ -117,7 +117,7 @@
         android:id="@+id/registerPageCPasswordEntry"
         android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
+        android:layout_marginStart="11dp"
         android:layout_marginTop="12dp"
         android:background="@color/white"
         android:inputType="textPassword"

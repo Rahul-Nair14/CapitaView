@@ -23,6 +23,7 @@ public class Articles extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_articles);
 
+        //Initializing everything
         articlePublishDate = findViewById(R.id.articlePublishDate);
         articleTitleTextView = findViewById(R.id.articleTitleTextView);
         articleDescriptionTextView = findViewById(R.id.articleDescriptionTextView);

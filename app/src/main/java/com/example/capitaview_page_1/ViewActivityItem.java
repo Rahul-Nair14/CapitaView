@@ -1,7 +1,8 @@
 package com.example.capitaview_page_1;
 
-import android.graphics.Color;
-
+//Template for View Activity Item which displays
+//all the info to the user about their stocks from both Firebase
+//as well as AlphaVantage
 public class ViewActivityItem {
     private String companyName;
     private double price;

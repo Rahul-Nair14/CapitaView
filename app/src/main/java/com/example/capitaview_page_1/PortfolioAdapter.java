@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import java.util.List;
 
+//Template for Portfolio Items List in Manage Activity layout
 public class PortfolioAdapter extends ArrayAdapter<PortfolioItem> {
 
     private Context context;

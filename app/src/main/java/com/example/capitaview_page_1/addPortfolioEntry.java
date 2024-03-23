@@ -52,6 +52,7 @@ public class addPortfolioEntry extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_portfolio_entry);
 
+        //Initializing everything
         companyNameSpinner = findViewById(R.id.companyNameSpinner);
         dateEditText = findViewById(R.id.dateEditText);
         industryEditText = findViewById(R.id.industryEditText);
@@ -60,26 +61,30 @@ public class addPortfolioEntry extends AppCompatActivity {
         setDateButton = findViewById(R.id.setDate);
         mAuth = FirebaseAuth.getInstance();
 
+        //Setting each entry to null at start
         dateEditText.setText("");
         industryEditText.setText("");
         amountEditText.setText("");
 
+        //getting current user from Firebase and getting the Firebase table reference
         FirebaseUser mUser = mAuth.getCurrentUser();
         String uid = mUser.getUid();
-
         portfolioRef = FirebaseDatabase.getInstance("https://capitaviewdb-default-rtdb.asia-southeast1.firebasedatabase.app/")
                 .getReference().child("Users").child(uid).child("PortfolioItem");
 
 
-        // Fetch list of company names from API and populate spinner
+        // Fetch list of company names from API or cache and populate spinner
         fetchCompanyNames();
 
+        //This is used for setting the date for when the stocks are bought
         setDateButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog();
             }
         });
+
+        //When the addStocks button is clickec, we open up an alert Dialog box
         addEntryButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -88,6 +93,8 @@ public class addPortfolioEntry extends AppCompatActivity {
         });
     }
 
+    //We use cached data from second opening of app and API loads values only on first install
+    //Not very practical as listings can be updated on the API, need to change later
     private void fetchCompanyNames() {
         // Check if data is available in cache
         String cachedData = cacheManager.getListings(this);
@@ -96,12 +103,12 @@ public class addPortfolioEntry extends AppCompatActivity {
             loadCompanyNamesFromCache(cachedData);
         } else {
             // Fetch data from API
-
             fetchDataFromAPI();
         }
 
     }
 
+    //Load company names from cache if the cache is not empty, have used SharedPreferences for this
     private void loadCompanyNamesFromCache(String cachedData) {
         // Parse cached data and populate the spinner
         try {
@@ -116,6 +123,7 @@ public class addPortfolioEntry extends AppCompatActivity {
     }
 
 
+    //Date picker for setting date of purchase by user
     private void showDatePickerDialog() {
         // Get current date
         Calendar calendar = Calendar.getInstance();
@@ -123,7 +131,9 @@ public class addPortfolioEntry extends AppCompatActivity {
         int month = calendar.get(Calendar.MONTH);
         int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
 
-        // Subtract one day from the current date
+        // Subtract one day from the current date so that user
+        // doesn't use the current date - API doesnt provide values for
+        // current day
         calendar.add(Calendar.DAY_OF_MONTH, -1);
 
         // Get the updated year, month, and dayOfMonth
@@ -143,22 +153,26 @@ public class addPortfolioEntry extends AppCompatActivity {
                 },
                 year, month, dayOfMonth);
 
+        // Setting max date that can be selected by user
         datePickerDialog.getDatePicker().setMaxDate(calendar.getTimeInMillis());
         // Show date picker dialog
         datePickerDialog.show();
     }
 
 
+    // If cache is empty, we call the API
     private void fetchDataFromAPI() {
         OkHttpClient client = new OkHttpClient();
-
         Request request = new Request.Builder()
                 .url("https://www.alphavantage.co/query?function=LISTING_STATUS&apikey=DBU9W8268XTGDI1Y")
                 .build();
 
         client.newCall(request).enqueue(new Callback() {
+
+            //If API fails to load company names
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Toast.makeText(addPortfolioEntry.this,"Connection failed. Please try again later",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 
@@ -170,6 +184,7 @@ public class addPortfolioEntry extends AppCompatActivity {
                         @Override
                         public void run() {
                             try {
+                                //Getting the csv file from API and parsing it into a list to be set as adapter
                                 List<String> companyNames = parseCompanyNames(responseData);
                                 ArrayAdapter<String> adapter = new ArrayAdapter<>(addPortfolioEntry.this,
                                         android.R.layout.simple_spinner_item, companyNames);
@@ -178,6 +193,7 @@ public class addPortfolioEntry extends AppCompatActivity {
                                 cacheManager.saveListings(addPortfolioEntry.this, responseData);
 
                             } catch (Exception e) {
+                                Toast.makeText(addPortfolioEntry.this,"Data cannot be loaded. Try again later",Toast.LENGTH_SHORT).show();
                                 e.printStackTrace();
                             }
                         }
@@ -187,6 +203,8 @@ public class addPortfolioEntry extends AppCompatActivity {
         });
     }
 
+    // API provides CSV File of listings, we need to parse it
+    // to use it within our application
     private List<String> parseCompanyNames(String csvData) {
         List<String> companyNames = new ArrayList<>();
 
@@ -205,7 +223,11 @@ public class addPortfolioEntry extends AppCompatActivity {
     }
 
 
-    private void addPortfolioEntry(double price) {
+    // Main brains of the activity
+    // Creates a PortfolioItem with the price gotten from the API
+    // along with user entries of date, name, amount and industry
+    // This is pushed to the Firebase Database from which Manage activity gets the data and lists the stocks
+    private void addPortfolioEntrytoDatabase(double price) {
         // Get data from EditText fields
         String companyName = companyNameSpinner.getSelectedItem().toString().trim();
         String date = dateEditText.getText().toString().trim();
@@ -232,6 +254,8 @@ public class addPortfolioEntry extends AppCompatActivity {
     }
 
 
+    // Shows the Dialog when the add stocks button is clicked
+    // Allows user a second to check if the data entered is right
     private void showConfirmationDialog() {
 
         String companyName = companyNameSpinner.getSelectedItem().toString().trim();
@@ -259,7 +283,9 @@ public class addPortfolioEntry extends AppCompatActivity {
         }
     }
 
-
+    // Gets the date and symbol of the company from the user
+    // uses the API to find the price of the stocks on that given date
+    // returns that price to addPortfolioEntrytoDatabase
     private void calculatePriceAndAddPortfolioEntry(String symbol, String date) {
         // Make API call to fetch historical price data for the selected company and date
         OkHttpClient client = new OkHttpClient();
@@ -271,6 +297,7 @@ public class addPortfolioEntry extends AppCompatActivity {
         client.newCall(request).enqueue(new Callback() {
             @Override
             public void onFailure(@NonNull Call call, @NonNull IOException e) {
+                Toast.makeText(addPortfolioEntry.this, "Connection failed. Please Try again later",Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
 
@@ -287,11 +314,12 @@ public class addPortfolioEntry extends AppCompatActivity {
                                 JSONObject jsonData = new JSONObject(responseData);
                                 JSONObject timeSeriesData = jsonData.getJSONObject("Time Series (Daily)");
                                 String[] dateParts = date.split("/");
-                                String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0])); // Construct date in YYYY-MM-DD format
+                                // Construct date in YYYY-MM-DD format
+                                String formattedDate = dateParts[2] + "-" + String.format("%02d", Integer.parseInt(dateParts[1])) + "-" + String.format("%02d", Integer.parseInt(dateParts[0]));
                                 JSONObject dayData = timeSeriesData.getJSONObject(formattedDate);
                                 if(dayData!=null) {
                                     double closingPrice = Double.parseDouble(dayData.getString("4. close"));
-                                    addPortfolioEntry(closingPrice);
+                                    addPortfolioEntrytoDatabase(closingPrice);
                                 }
                                 else {
                                     Toast.makeText(addPortfolioEntry.this, "No data found for that date, try another date",Toast.LENGTH_SHORT).show();

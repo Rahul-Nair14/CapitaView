@@ -31,7 +31,7 @@
         android:layout_marginTop="10dp"
         android:id="@+id/companyNameSpinner"
         android:layout_width="match_parent"
-        android:layout_height="30dp"
+        android:layout_height="48dp"
         android:textColor="@color/black"
         android:spinnerMode="dropdown"
         android:dropDownWidth="match_parent"

@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+//Adapter for Headlines
 public class HeadlineAdapter extends ArrayAdapter<Headline> {
     public HeadlineAdapter(Context context, ArrayList<Headline> headlines) {
         super(context, 0, headlines);

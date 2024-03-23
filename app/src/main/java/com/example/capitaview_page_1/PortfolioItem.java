@@ -1,5 +1,6 @@
 package com.example.capitaview_page_1;
 
+//Template for Portfolio Item which is uploaded to the database
 public class PortfolioItem {
 
     private String CompanyName, Date, Industry, itemId;

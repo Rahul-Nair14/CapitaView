@@ -1,5 +1,6 @@
 package com.example.capitaview_page_1;
 
+//Template for Headlines
 public class Headline {
     private String title;
     private String imageResource;

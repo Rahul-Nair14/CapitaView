@@ -26,7 +26,6 @@ public class MainDashboard extends AppCompatActivity {
     FirebaseAuth firebaseAuth;
     Button dashboardLogoutVar;
     ImageButton dashboardNewsVar,dashboardManageVar,dashboardViewVar,dashboardChartsVar;
-
     TextView dashBoardUserName;
     public static String dashBoardUserNameString;
 
@@ -35,6 +34,7 @@ public class MainDashboard extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_dashboard);
 
+        //Initializing everything and getting Firebase Auth
         firebaseAuth = FirebaseAuth.getInstance();
         dashboardLogoutVar = (Button) findViewById(R.id.LogoutButton);
         dashboardManageVar = (ImageButton)findViewById(R.id.dashboardManageButton);
@@ -43,22 +43,39 @@ public class MainDashboard extends AppCompatActivity {
         dashboardNewsVar = (ImageButton)findViewById(R.id.dashboardNewsButton);
         dashBoardUserName = (TextView)findViewById(R.id.dashboardUserName);
 
+        //Getting the LoginPrefs so that we can store the username in the cache
+        SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
 
         Intent intent = getIntent();
+
+        //If the user has come from login activity, it will set up the name correctly from login
         if(Objects.equals(intent.getStringExtra("activityName"), "Login")) {
             String temp = intent.getStringExtra("userNameForUse");
             dashBoardUserName.setText(temp);
             dashBoardUserNameString = temp;
+            //Stores the username in cache for later usage if Login activity is not triggered
+            editor.putString("UsernameKey", dashBoardUserNameString);
+            editor.apply();
+
         }
+        //Getting the username from cache in case user switches apps and skips Login
+        else if(sharedPreferences.getBoolean("isLoggedIn",true)) {
+            dashBoardUserNameString = sharedPreferences.getString("UsernameKey", "");
+            dashBoardUserName.setText(dashBoardUserNameString);
+        }
+        //Edge case
         else
             dashBoardUserName.setText("Welcome " + dashBoardUserNameString);
 
+        //Logging out the user from Firebase and the application
         dashboardLogoutVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
                 firebaseAuth.signOut();
 
+                //Logs out the user so we update cache as well
                 SharedPreferences sharedPreferences = getSharedPreferences("LoginPrefs", Context.MODE_PRIVATE);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 editor.putBoolean("isLoggedIn", false);
@@ -70,6 +87,7 @@ public class MainDashboard extends AppCompatActivity {
             }
         });
 
+        //News activity start
         dashboardNewsVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -77,20 +95,16 @@ public class MainDashboard extends AppCompatActivity {
             }
         });
 
+        //Manage activity start
         dashboardManageVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = getIntent();
-                String userNameFromLogin = intent.getStringExtra("userNameForUse");
 
-                Intent manageIntent = new Intent(MainDashboard.this,ManageActivity.class);
-                manageIntent.putExtra("userNameFromLogin",userNameFromLogin);
-                manageIntent.putExtra("activityName","mainDashBoard");
-                startActivity(manageIntent);
-
+                startActivity(new Intent(MainDashboard.this,ManageActivity.class));
             }
         });
 
+        //Charts activity start
         dashboardChartsVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -98,6 +112,7 @@ public class MainDashboard extends AppCompatActivity {
             }
         });
 
+        //View activity start
         dashboardViewVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

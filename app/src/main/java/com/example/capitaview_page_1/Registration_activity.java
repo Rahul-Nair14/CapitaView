@@ -30,13 +30,15 @@ public class Registration_activity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registration);
 
+        //Initializing everything
         firebaseAuth = FirebaseAuth.getInstance();
-
         registerCPasswordVar = (EditText)findViewById(R.id.registerPageCPasswordEntry);
         registerPasswordVar = (EditText)findViewById(R.id.registerPagePassWordEntry);
         registerUserNameVar = (EditText)findViewById(R.id.registerPageUserNameEntry);
-
         registerButtonVar = (Button) findViewById(R.id.RegisterButton);
+
+        //Signs up the user into the Firebase database
+        //Validation of all fields is given
         registerButtonVar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -70,6 +72,7 @@ public class Registration_activity extends AppCompatActivity {
                             }
                         }
                     }).addOnFailureListener(new OnFailureListener() {
+                        //Handling exceptions on registration
                         @Override
                         public void onFailure(@NonNull Exception e) {
                             if (e instanceof FirebaseAuthUserCollisionException) {
