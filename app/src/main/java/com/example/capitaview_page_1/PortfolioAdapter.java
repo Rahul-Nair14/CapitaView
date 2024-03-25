@@ -16,7 +16,6 @@ public class PortfolioAdapter extends ArrayAdapter<PortfolioItem> {
 
     private Context context;
     private List<PortfolioItem> portfolioItemList;
-
     private OnDeleteButtonClickListener onDeleteButtonClickListener;
 
     public PortfolioAdapter(Context context, List<PortfolioItem> portfolioItemList) {

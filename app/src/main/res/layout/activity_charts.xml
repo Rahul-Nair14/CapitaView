@@ -1,9 +1,119 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".ChartsActivity">
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:app="http://schemas.android.com/apk/res-auto"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context=".MainActivity"
+android:background="@color/white">
+
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/chartsCompanyName"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Company Name" />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/chartsCompanyName"
+        android:id="@+id/chartsBoughtDate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="20sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Bought on: " />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/chartsBoughtDate"
+        android:id="@+id/currentDateText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Current Date:  " />
+
+    <TextView
+        android:layout_marginTop="10dp"
+        android:id="@+id/lineIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@id/currentDateText"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Line Chart - Price Variation" />
+
+<!--    Line chart-->
+    <com.github.mikephil.charting.charts.LineChart
+        android:layout_below="@+id/lineIntro"
+        android:id="@+id/lineChart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/barIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@id/lineChart"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Bar Chart - Amount bought vs Volume Dealt" />
+
+    <!-- Bar Chart -->
+    <com.github.mikephil.charting.charts.BarChart
+        android:id="@+id/barChart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/barIntro"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+    <TextView
+        android:layout_marginTop="20dp"
+        android:id="@+id/pieIntro"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/black"
+        android:layout_below="@id/barChart"
+        android:textStyle="bold"
+        android:textSize="15sp"
+        android:gravity="center_horizontal"
+        android:layout_centerHorizontal="true"
+        android:text="Pie Chart - Investment Overview" />
+
+    <!-- Pie Chart -->
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/pieChart"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/pieIntro"
+        android:layout_marginTop="16dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp" />
+
+</RelativeLayout>

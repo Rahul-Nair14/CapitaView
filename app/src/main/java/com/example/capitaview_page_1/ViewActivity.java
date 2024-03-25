@@ -107,7 +107,31 @@ public class ViewActivity extends AppCompatActivity {
                 }
             });
 
-            //Dummy Item Click, we dont want item clicks
+            viewActivityAdapter.setOnGetChartsButtonClickListener(new ViewActivityAdapter.onGetChartsButtonClickListener() {
+                @Override
+                public void onGetChartsClick(int position) {
+                    // Handle click event of the Get Charts Button
+                    // Start the ChartsActivity
+                    ViewActivityItem selectedItem = viewActivityItemList.get(position);
+                    Intent intent = new Intent(ViewActivity.this, ChartsActivity.class);
+                    intent.putExtra("CompanyName", selectedItem.getCompanyName());
+                    intent.putExtra("Date", selectedItem.getDate());
+                    intent.putExtra("Price", selectedItem.getPrice());
+                    intent.putExtra("Amount", selectedItem.getAmount());
+                    intent.putExtra("Low", selectedItem.getLowValue());
+                    intent.putExtra("Open", selectedItem.getOpenValue());
+                    intent.putExtra("High", selectedItem.getHighValue());
+                    intent.putExtra("Close", selectedItem.getCloseValue());
+                    intent.putExtra("Volume",selectedItem.getVolume());
+                    intent.putExtra("Industry",selectedItem.getIndustry());
+                    intent.putExtra("PercentageChange",selectedItem.getPercentchange());
+                    intent.putExtra("PercentageChangeColor",selectedItem.getPercentageChangeColor());
+                    intent.putExtra("TotalPrice",selectedItem.getTotalPrice());
+                    startActivity(intent);
+                }
+            });
+
+            //Dummy Item Click, we don't want item clicks
             viewListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
                 @Override
                 public void onItemClick(AdapterView<?> parent, View view, int position, long id) {

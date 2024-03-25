@@ -39,7 +39,6 @@ public class MainDashboard extends AppCompatActivity {
         dashboardLogoutVar = (Button) findViewById(R.id.LogoutButton);
         dashboardManageVar = (ImageButton)findViewById(R.id.dashboardManageButton);
         dashboardViewVar = (ImageButton)findViewById(R.id.dashboardViewButton);
-        dashboardChartsVar = (ImageButton)findViewById(R.id.dashboardChartsButton);
         dashboardNewsVar = (ImageButton)findViewById(R.id.dashboardNewsButton);
         dashBoardUserName = (TextView)findViewById(R.id.dashboardUserName);
 
@@ -101,14 +100,6 @@ public class MainDashboard extends AppCompatActivity {
             public void onClick(View view) {
 
                 startActivity(new Intent(MainDashboard.this,ManageActivity.class));
-            }
-        });
-
-        //Charts activity start
-        dashboardChartsVar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(MainDashboard.this, ChartsActivity.class));
             }
         });
 

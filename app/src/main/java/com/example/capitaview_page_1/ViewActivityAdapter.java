@@ -29,10 +29,19 @@ public class ViewActivityAdapter extends ArrayAdapter<ViewActivityItem> {
 
     private Context context;
     private List<ViewActivityItem> viewItemList;
+    private onGetChartsButtonClickListener onGetChartsButtonClickListener;
     public ViewActivityAdapter(Context context, List<ViewActivityItem> viewItemList) {
         super(context, 0, viewItemList);
         this.context = context;
         this.viewItemList = viewItemList;
+    }
+
+    public interface onGetChartsButtonClickListener {
+        void onGetChartsClick(int position);
+    }
+
+    public void setOnGetChartsButtonClickListener(ViewActivityAdapter.onGetChartsButtonClickListener listener) {
+        this.onGetChartsButtonClickListener = listener;
     }
 
     @NonNull
@@ -57,6 +66,7 @@ public class ViewActivityAdapter extends ArrayAdapter<ViewActivityItem> {
         TextView closeValueTextView = listItemView.findViewById(R.id.closeValueTextView);
         TextView volumeTextView = listItemView.findViewById(R.id.volumeTextView);
         TextView percentChangeTextView = listItemView.findViewById(R.id.percentageChangeTextView);
+        Button getChartsButton = listItemView.findViewById(R.id.getChartsButton);
 
         companyNameTextView.setText(currentItem.getCompanyName());
         priceTextView.setText("$" + currentItem.getPrice());
@@ -71,6 +81,15 @@ public class ViewActivityAdapter extends ArrayAdapter<ViewActivityItem> {
         volumeTextView.setText("" + currentItem.getVolume());
         percentChangeTextView.setText(String.format("%.2f%%", currentItem.getPercentchange()));
         percentChangeTextView.setTextColor(currentItem.getPercentageChangeColor());
+
+        getChartsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onGetChartsButtonClickListener != null) {
+                    onGetChartsButtonClickListener.onGetChartsClick(position);
+                }
+            }
+        });
 
         return listItemView;
     }

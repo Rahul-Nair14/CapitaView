@@ -9,17 +9,6 @@
     android:padding="10dp">
 
 
-
-    <TextView
-        android:id="@+id/companyNameView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/white"
-        android:textStyle="bold"
-        android:textSize="20sp"
-        android:layout_gravity="center_horizontal"
-        android:text="Company Name" />
-
     <TableLayout
         android:layout_marginTop="5dp"
         android:background="@color/capitaViewLightBlue"
@@ -27,6 +16,37 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:stretchColumns="*">
+
+        <TableRow
+            android:background="@color/capitaViewLightBlue"
+            android:layout_margin="1dp">
+
+        <TextView
+            android:id="@+id/companyNameView"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textStyle="bold"
+            android:textSize="20sp"
+            android:layout_gravity="center_vertical"
+            android:gravity="center_horizontal"
+            android:text="Company Name" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_marginStart="40dp"
+            android:background="#0f396d"
+            android:id="@+id/getChartsButton"
+            android:text="Get charts"
+            android:textColor="@color/white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_marginTop="2dp"
+            />
+        </TableRow>
 
         <TableRow
             android:background="@color/capitaViewLightBlue"
